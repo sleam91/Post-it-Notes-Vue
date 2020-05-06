@@ -1,17 +1,50 @@
 <template>
-<body>
-    <h1>GOODNOTES</h1>
-    <nav>
-        <img id="rutnet" src="./img/grid.png" alt="Grid" title="Grid View" />
-        <img id="trash" src="./img/trash.png" alt="Delete" title="Delete Post-it" />
-        <img id="create" src="./img/create.png" alt="Create" title="Create Post-it" />
-        <img id="penInPapper" src="./img/pen-in-paper.png" alt="List" title="List View" />
-        <img id="pen" src="./img/pen.png" alt="Font Color" title="Change Font Color" />
-        <img id="marker" src="./img/marker.png" alt="Post-it Color" title="Change Post-it Color" />
-    </nav>
-    <h3>GOODNOTES POST-IT NOTES</h3>
-    <Main />
-</body>
+    <div class="wrapper">
+        <h1>GOODNOTES</h1>
+        <nav>
+            <img id="grid" src="./img/grid.png" alt="Grid" title="Grid View" v-on:click="viewGrid" />
+            <img
+                id="trash"
+                src="./img/trash.png"
+                alt="Delete"
+                title="Delete Post-it"
+                v-on:click="deleteCard"
+            />
+            <img
+                id="create"
+                src="./img/create.png"
+                alt="Create"
+                title="Create Post-it"
+                v-on:click="createCard"
+            />
+            <img
+                id="penInPaper"
+                src="./img/pen-in-paper.png"
+                alt="List"
+                title="List View"
+                v-on:click="viewList"
+            />
+            <img
+                id="pen"
+                src="./img/pen.png"
+                alt="Font Color"
+                title="Change Font Color"
+                v-on:click="changeFontColor"
+            />
+            <img
+                id="marker"
+                src="./img/marker.png"
+                alt="Post-it Color"
+                title="Change Post-it Color"
+                v-on:click="changePostItColor"
+            />
+        </nav>
+        <h3>GOODNOTES POST-IT NOTES</h3>
+        <Main v-on:grid="viewGrid" 
+        v-bind:cards="cards"
+        v-bind:showGrid="showGrid"
+        v-on:hide="hideGrid"/>
+    </div>
 </template>
 
 <script>
@@ -23,14 +56,63 @@ export default {
         Main: Main
     },
     data() {
-        return {};
+        return {
+            showGrid: true,
+            availableCardIdentifiers: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            allColors: [
+                "red",
+                "green",
+                "blue",
+                "black",
+                "orange",
+                "grey",
+                "purple",
+                "lightblue",
+                "cyan",
+                "magenta",
+                "lightgreen",
+                "violet",
+                "olive",
+                "teal",
+                "plum"
+            ],
+            cards: []
+        };
     },
-    methods: {}
+    methods: {
+        viewGrid() {
+            
+            this.showGrid = true;
+        },
+        hideGrid(payload) {
+            this.cards[payload.id]=payload
+            this.showGrid = false;
+        },
+
+        deleteCard() {},
+        createCard() {
+            if (this.availableCardIdentifiers.length !== 0) {
+                this.cards.push({
+                    id: this.availableCardIdentifiers.shift(),
+                    color: this.allColors[
+                        Math.floor(Math.random() * this.allColors.length)
+                    ],
+                    text: "",
+                    fontColor:""
+                });
+            }
+        },
+
+        viewList() {},
+        changeFontColor() {},
+        changePostItColor() {}
+    }
 };
 </script>
 
 <style>
-body {
+.wrapper {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
