@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main v-bind:class = "(showList)?'list':''">
         <div
             v-for="card in cards"
             v-bind:key="card.id"
@@ -10,7 +10,7 @@
             v-on:click="expandCard"
         ></div>
 
-        <PostIt v-if="!showGrid" v-bind:currentCard="currentCard" />
+        <PostIt v-if="!showGrid&&!showList" v-bind:currentCard="currentCard" />
     </main>
 </template>
 
@@ -25,7 +25,8 @@ export default {
 
     props: {
         cards: Array,
-        showGrid: Boolean
+        showGrid: Boolean,
+        showList: Boolean
     },
     data() {
         return {
@@ -61,6 +62,13 @@ main {
     grid-template-rows: repeat(4, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 30px;
+}
+
+.list{
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 0;
+    grid-row-gap: 12px;
 }
 .card {
     grid-area: auto;

@@ -46,6 +46,7 @@
             v-on:grid="viewGrid"
             v-bind:cards="cards"
             v-bind:showGrid="showGrid"
+            v-bind:showList="showList"
             v-on:hide="hideGrid"
         />
     </div>
@@ -63,8 +64,10 @@ export default {
         return {
             currentCard: {},
             showGrid: true,
+            showList: false,
             showTrash: false,
             showCreate: true,
+            viewMode: "grid",
             availableCardIdentifiers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             allColors: [
                 "red",
@@ -88,13 +91,14 @@ export default {
     },
     methods: {
         viewGrid() {
-
-            this.saveCardAndUpdateView()
-
+            (this.viewMode = "grid"), (this.showGrid = true);
+            this.showList = false;
+            this.saveCardAndUpdateView();
         },
         hideGrid(payload) {
             this.currentCard = payload;
             this.showGrid = false;
+            this.showList = false;
             this.showTrash = true;
             this.showCreate = false;
         },
@@ -105,8 +109,14 @@ export default {
                 card => card.id !== this.currentCard.id
             );
             this.currentCard = {};
+
             this.showCreate = true;
-            this.showGrid = true;
+            if (this.viewMode === "grid") {
+                this.showGrid = true;
+            } else {
+                this.showList = true;
+            }
+
             this.showTrash = false;
         },
         createCard() {
@@ -123,7 +133,10 @@ export default {
         },
 
         viewList() {
-            this.saveCardAndUpdateView()
+            this.viewMode = "list";
+            this.showGrid = false;
+            this.showList = true;
+            this.saveCardAndUpdateView();
         },
         changeFontColor() {
             if (Object.keys(this.currentCard).length !== 0) {
@@ -139,15 +152,18 @@ export default {
                 ];
             }
         },
-        saveCardAndUpdateView(){
-            let card = this.cards.find(card => card.id === this.currentCard.id);
-            card.text = this.currentCard.text;
-            card.color = this.currentCard.color;
-            card.fontColor = this.currentCard.fontColor;
-            this.currentCard = {};
-            this.showCreate = true;
-            this.showGrid = true;
-            this.showTrash = false;
+        saveCardAndUpdateView() {
+            if (Object.keys(this.currentCard).length !== 0) {
+                let card = this.cards.find(
+                    card => card.id === this.currentCard.id
+                );
+                card.text = this.currentCard.text;
+                card.color = this.currentCard.color;
+                card.fontColor = this.currentCard.fontColor;
+                this.currentCard = {};
+                this.showCreate = true;
+                this.showTrash = false;
+            }
         }
     }
 };
