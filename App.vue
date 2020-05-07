@@ -88,14 +88,9 @@ export default {
     },
     methods: {
         viewGrid() {
-            let card = this.cards.find(card => card.id === this.currentCard.id);
-            card.text = this.currentCard.text;
-            card.color = this.currentCard.color;
-            card.fontColor = this.currentCard.fontColor;
-            this.currentCard = {};
-            this.showCreate = true;
-            this.showGrid = true;
-            this.showTrash = false;
+
+            this.saveCardAndUpdateView()
+
         },
         hideGrid(payload) {
             this.currentCard = payload;
@@ -127,7 +122,9 @@ export default {
             }
         },
 
-        viewList() {},
+        viewList() {
+            this.saveCardAndUpdateView()
+        },
         changeFontColor() {
             if (Object.keys(this.currentCard).length !== 0) {
                 this.currentCard.fontColor = this.allColors[
@@ -141,6 +138,16 @@ export default {
                     Math.floor(Math.random() * this.allColors.length)
                 ];
             }
+        },
+        saveCardAndUpdateView(){
+            let card = this.cards.find(card => card.id === this.currentCard.id);
+            card.text = this.currentCard.text;
+            card.color = this.currentCard.color;
+            card.fontColor = this.currentCard.fontColor;
+            this.currentCard = {};
+            this.showCreate = true;
+            this.showGrid = true;
+            this.showTrash = false;
         }
     }
 };

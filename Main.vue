@@ -10,7 +10,7 @@
             v-on:click="expandCard"
         ></div>
 
-        <PostIt v-if="currentCardvisible&&!showGrid" v-bind:currentCard="currentCard" />
+        <PostIt v-if="!showGrid" v-bind:currentCard="currentCard" />
     </main>
 </template>
 
@@ -29,7 +29,6 @@ export default {
     },
     data() {
         return {
-            currentCardvisible: false,
             currentCard: {}
         };
     },
@@ -38,14 +37,14 @@ export default {
             let eventId = parseInt(event.target.id, 10);
 
             let card = this.cards.find(card => card.id === eventId);
-            console.log(card);
+
             this.currentCard = {
                 id: card.id,
                 color: card.color,
                 text: card.text,
                 fontColor: card.fontColor
             };
-            this.currentCardvisible = true;
+
             this.$emit("hide", this.currentCard);
         }
     }
@@ -69,7 +68,6 @@ main {
     box-shadow: 4px 4px 5px 0px rgba(135, 135, 135, 1);
     background-color: dodgerblue;
     transition: transform 0.3s ease-out;
-    /* display: none; */
 }
 
 .card:hover {
