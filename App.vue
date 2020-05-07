@@ -8,6 +8,7 @@
                 src="./img/trash.png"
                 alt="Delete"
                 title="Delete Post-it"
+                v-if="showTrash"
                 v-on:click="deleteCard"
             />
             <img
@@ -15,6 +16,7 @@
                 src="./img/create.png"
                 alt="Create"
                 title="Create Post-it"
+                v-if="showCreate"
                 v-on:click="createCard"
             />
             <img
@@ -40,10 +42,12 @@
             />
         </nav>
         <h3>GOODNOTES POST-IT NOTES</h3>
-        <Main v-on:grid="viewGrid" 
-        v-bind:cards="cards"
-        v-bind:showGrid="showGrid"
-        v-on:hide="hideGrid"/>
+        <Main
+            v-on:grid="viewGrid"
+            v-bind:cards="cards"
+            v-bind:showGrid="showGrid"
+            v-on:hide="hideGrid"
+        />
     </div>
 </template>
 
@@ -57,8 +61,11 @@ export default {
     },
     data() {
         return {
+            currentCard: {},
             showGrid: true,
-            availableCardIdentifiers: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            showTrash: false,
+            showCreate: true,
+            availableCardIdentifiers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             allColors: [
                 "red",
                 "green",
@@ -81,15 +88,32 @@ export default {
     },
     methods: {
         viewGrid() {
-            
+            let card = this.cards.find(card => card.id === this.currentCard.id);
+            card.text = this.currentCard.text;
+            card.color = this.currentCard.color;
+            card.fontColor = this.currentCard.fontColor;
+            this.currentCard={}
+            this.showCreate = true;
             this.showGrid = true;
+            this.showTrash = false;
         },
         hideGrid(payload) {
-            this.cards[payload.id]=payload
+            this.currentCard = payload;
             this.showGrid = false;
+            this.showTrash = true;
+            this.showCreate = false;
         },
 
-        deleteCard() {},
+        deleteCard() {
+            this.availableCardIdentifiers.push(this.currentCard.id);
+            this.cards = this.cards.filter(
+                card => card.id !== this.currentCard.id
+            );
+            this.currentCard = {};
+            this.showCreate = true;
+            this.showGrid = true;
+            this.showTrash = false;
+        },
         createCard() {
             if (this.availableCardIdentifiers.length !== 0) {
                 this.cards.push({
@@ -98,7 +122,7 @@ export default {
                         Math.floor(Math.random() * this.allColors.length)
                     ],
                     text: "",
-                    fontColor:""
+                    fontColor: ""
                 });
             }
         },
@@ -133,10 +157,6 @@ nav {
     border-bottom: 10px solid rgb(184, 184, 184);
     background-color: rgb(230, 230, 230);
     border-radius: 3px;
-}
-
-#trash {
-    display: none;
 }
 
 img:first-of-type {

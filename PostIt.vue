@@ -11,9 +11,7 @@ export default {
         currentCard: Object
     },
     data() {
-        return {
-            
-        };
+        return {};
     },
     methods: {
         changeFontColor() {},
@@ -40,7 +38,7 @@ textarea {
     align-self: center;
     text-align: center;
     color: white;
-    font-family: cursive;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: x-large;
     font-weight: 900;
     border: none;

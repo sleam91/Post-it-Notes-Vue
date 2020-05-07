@@ -35,16 +35,18 @@ export default {
     },
     methods: {
         expandCard(event) {
-            let eventId = event.target.id;
-            console.log(eventId)
+            let eventId = parseInt(event.target.id, 10);
+
+            let card = this.cards.find(card => card.id === eventId);
+            console.log(card);
             this.currentCard = {
-                id: eventId,
-                color: this.cards[eventId].color,
-                text: this.cards[eventId].text,
-                fontColor: this.cards[eventId].fontColor
+                id: card.id,
+                color: card.color,
+                text: card.text,
+                fontColor: card.fontColor
             };
             this.currentCardvisible = true;
-            this.$emit("hide",this.currentCard)
+            this.$emit("hide", this.currentCard);
         }
     }
 };
