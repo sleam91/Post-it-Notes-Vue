@@ -92,7 +92,7 @@ export default {
             card.text = this.currentCard.text;
             card.color = this.currentCard.color;
             card.fontColor = this.currentCard.fontColor;
-            this.currentCard={}
+            this.currentCard = {};
             this.showCreate = true;
             this.showGrid = true;
             this.showTrash = false;
@@ -128,8 +128,20 @@ export default {
         },
 
         viewList() {},
-        changeFontColor() {},
-        changePostItColor() {}
+        changeFontColor() {
+            if (Object.keys(this.currentCard).length !== 0) {
+                this.currentCard.fontColor = this.allColors[
+                    Math.floor(Math.random() * this.allColors.length)
+                ];
+            }
+        },
+        changePostItColor() {
+            if (Object.keys(this.currentCard).length !== 0) {
+                this.currentCard.color = this.allColors[
+                    Math.floor(Math.random() * this.allColors.length)
+                ];
+            }
+        }
     }
 };
 </script>
