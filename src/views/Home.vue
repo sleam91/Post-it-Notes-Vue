@@ -1,11 +1,11 @@
 <template>
-    <div class="wrapper">
+    <div class="home">
         <h1>GOODNOTES</h1>
         <nav>
-            <img id="grid" src="./img/grid.png" alt="Grid" title="Grid View" v-on:click="viewGrid" />
+            <img id="grid" src="@/assets/grid.png" alt="Grid" title="Grid View" v-on:click="viewGrid" />
             <img
                 id="trash"
-                src="./img/trash.png"
+                src="@/assets/trash.png"
                 alt="Delete"
                 title="Delete Post-it"
                 v-if="showTrash"
@@ -13,7 +13,7 @@
             />
             <img
                 id="create"
-                src="./img/create.png"
+                src="@/assets/create.png"
                 alt="Create"
                 title="Create Post-it"
                 v-if="showCreate"
@@ -21,21 +21,21 @@
             />
             <img
                 id="penInPaper"
-                src="./img/pen-in-paper.png"
+                src="@/assets/pen-in-paper.png"
                 alt="List"
                 title="List View"
                 v-on:click="viewList"
             />
             <img
                 id="pen"
-                src="./img/pen.png"
+                src="@/assets/pen.png"
                 alt="Font Color"
                 title="Change Font Color"
                 v-on:click="changeFontColor"
             />
             <img
                 id="marker"
-                src="./img/marker.png"
+                src="@/assets/marker.png"
                 alt="Post-it Color"
                 title="Change Post-it Color"
                 v-on:click="changePostItColor"
@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import Main from "./Main";
+import Main from "@/components/Main";
 
 export default {
-    name: "App",
+    name: "Home",
     components: {
         Main: Main
     },
@@ -170,7 +170,7 @@ export default {
 </script>
 
 <style>
-.wrapper {
+.home {
     width: 100%;
     display: flex;
     flex-direction: column;

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import PostIt from "./PostIt";
+import PostIt from "@/components/PostIt";
 export default {
     name: "Main",
 
