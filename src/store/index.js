@@ -28,22 +28,14 @@ export default new Vuex.Store({
   },
   mutations: {
     expandCard(state, id) {
-      let card = state.cards.find(card => card.id === id);
-      state.currentCard = {
-        id: card.id,
-        color: card.color,
-        text: card.text,
-        fontColor: card.fontColor
-      };
+      state.currentCard = state.cards.find(card => card.id === id);
     },
-
     deleteCard(state) {
       state.availableCardIdentifiers.push(state.currentCard.id);
       state.cards = state.cards.filter(
         card => card.id !== state.currentCard.id
       );
       state.currentCard = {};
-
     },
     createCard(state) {
       if (state.availableCardIdentifiers.length !== 0) {
@@ -73,12 +65,6 @@ export default new Vuex.Store({
     },
     saveCardAndUpdateView(state) {
       if (Object.keys(state.currentCard).length !== 0) {
-        let card = state.cards.find(
-          card => card.id === state.currentCard.id
-        );
-        card.text = state.currentCard.text;
-        card.color = state.currentCard.color;
-        card.fontColor = state.currentCard.fontColor;
         state.currentCard = {};
       }
     }
@@ -93,16 +79,15 @@ export default new Vuex.Store({
     createCard(context) {
       context.commit('createCard')
     },
-    changeFontColor(context){
+    changeFontColor(context) {
       context.commit('changeFontColor')
     },
-    changePostItColor(context){
+    changePostItColor(context) {
       context.commit('changePostItColor')
     },
-    saveCardAndUpdateView(context){
+    saveCardAndUpdateView(context) {
       context.commit('saveCardAndUpdateView')
     }
-
   },
   modules: {
   }
