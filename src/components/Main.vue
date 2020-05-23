@@ -1,16 +1,16 @@
 <template>
     <main v-bind:class = "(showList)?'list':''">
         <div
-            v-for="card in cards"
+            v-for="card in $store.state.cards"
             v-bind:key="card.id"
             v-bind:card="card"
             class="card"
             v-bind:id="card.id"
             v-bind:style="{backgroundColor: card.color}"
-            v-on:click="expandCard"
+            v-on:click="expandCard(card.id)"
         ></div>
 
-        <PostIt v-if="!showGrid&&!showList" v-bind:currentCard="currentCard" />
+        <PostIt v-if="!showGrid&&!showList" />
     </main>
 </template>
 
@@ -20,33 +20,22 @@ export default {
     name: "Main",
 
     components: {
-        PostIt: PostIt
+        PostIt
     },
 
     props: {
-        cards: Array,
         showGrid: Boolean,
         showList: Boolean
     },
     data() {
         return {
-            currentCard: {}
+            
         };
     },
     methods: {
-        expandCard(event) {
-            let eventId = parseInt(event.target.id, 10);
-
-            let card = this.cards.find(card => card.id === eventId);
-
-            this.currentCard = {
-                id: card.id,
-                color: card.color,
-                text: card.text,
-                fontColor: card.fontColor
-            };
-
-            this.$emit("hide", this.currentCard);
+        expandCard(id) {
+            this.$store.dispatch('expandCard',id)
+            this.$emit("hide");
         }
     }
 };

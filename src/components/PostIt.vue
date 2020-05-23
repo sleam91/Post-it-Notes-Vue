@@ -7,12 +7,14 @@
 <script>
 export default {
     name: "PostIt",
-    props: {
-        currentCard: Object
-    },
     data() {
         return {};
     },
+    computed:{
+        currentCard(){
+            return this.$store.state.currentCard
+        }
+    }
 };
 </script>
 

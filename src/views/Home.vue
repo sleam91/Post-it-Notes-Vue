@@ -2,7 +2,13 @@
     <div class="home">
         <h1>GOODNOTES</h1>
         <nav>
-            <img id="grid" src="@/assets/grid.png" alt="Grid" title="Grid View" v-on:click="viewGrid" />
+            <img
+                id="grid"
+                src="@/assets/grid.png"
+                alt="Grid"
+                title="Grid View"
+                v-on:click="viewGrid"
+            />
             <img
                 id="trash"
                 src="@/assets/trash.png"
@@ -31,24 +37,18 @@
                 src="@/assets/pen.png"
                 alt="Font Color"
                 title="Change Font Color"
-                v-on:click="changeFontColor"
+                v-on:click="$store.dispatch('changeFontColor')"
             />
             <img
                 id="marker"
                 src="@/assets/marker.png"
                 alt="Post-it Color"
                 title="Change Post-it Color"
-                v-on:click="changePostItColor"
+                v-on:click="$store.dispatch('changePostItColor')"
             />
         </nav>
         <h3>GOODNOTES POST-IT NOTES</h3>
-        <Main
-            v-on:grid="viewGrid"
-            v-bind:cards="cards"
-            v-bind:showGrid="showGrid"
-            v-bind:showList="showList"
-            v-on:hide="hideGrid"
-        />
+        <Main v-bind:showGrid="showGrid" v-bind:showList="showList" v-on:hide="hideGrid" />
     </div>
 </template>
 
@@ -58,112 +58,53 @@ import Main from "@/components/Main";
 export default {
     name: "Home",
     components: {
-        Main: Main
+        Main
     },
     data() {
         return {
-            currentCard: {},
             showGrid: true,
             showList: false,
             showTrash: false,
             showCreate: true,
-            viewMode: "grid",
-            availableCardIdentifiers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            allColors: [
-                "red",
-                "green",
-                "blue",
-                "black",
-                "orange",
-                "grey",
-                "purple",
-                "lightblue",
-                "cyan",
-                "magenta",
-                "lightgreen",
-                "violet",
-                "olive",
-                "teal",
-                "plum"
-            ],
-            cards: []
+            viewMode: "grid"
         };
     },
     methods: {
         viewGrid() {
-            (this.viewMode = "grid"), (this.showGrid = true);
+            this.viewMode = "grid";
+            this.showGrid = true;
             this.showList = false;
             this.saveCardAndUpdateView();
         },
-        hideGrid(payload) {
-            this.currentCard = payload;
+        hideGrid() {
             this.showGrid = false;
             this.showList = false;
             this.showTrash = true;
             this.showCreate = false;
         },
-
-        deleteCard() {
-            this.availableCardIdentifiers.push(this.currentCard.id);
-            this.cards = this.cards.filter(
-                card => card.id !== this.currentCard.id
-            );
-            this.currentCard = {};
-
-            this.showCreate = true;
-            if (this.viewMode === "grid") {
-                this.showGrid = true;
-            } else {
-                this.showList = true;
-            }
-
-            this.showTrash = false;
-        },
-        createCard() {
-            if (this.availableCardIdentifiers.length !== 0) {
-                this.cards.push({
-                    id: this.availableCardIdentifiers.shift(),
-                    color: this.allColors[
-                        Math.floor(Math.random() * this.allColors.length)
-                    ],
-                    text: "",
-                    fontColor: ""
-                });
-            }
-        },
-
         viewList() {
             this.viewMode = "list";
             this.showGrid = false;
             this.showList = true;
             this.saveCardAndUpdateView();
         },
-        changeFontColor() {
-            if (Object.keys(this.currentCard).length !== 0) {
-                this.currentCard.fontColor = this.allColors[
-                    Math.floor(Math.random() * this.allColors.length)
-                ];
-            }
+        createCard() {
+            this.$store.dispatch("createCard");
         },
-        changePostItColor() {
-            if (Object.keys(this.currentCard).length !== 0) {
-                this.currentCard.color = this.allColors[
-                    Math.floor(Math.random() * this.allColors.length)
-                ];
+        deleteCard() {
+            this.$store.dispatch("deleteCard");
+            this.showCreate = true;
+            if (this.viewMode === "grid") {
+                this.showGrid = true;
+            } else {
+                this.showList = true;
             }
+            this.showTrash = false;
         },
         saveCardAndUpdateView() {
-            if (Object.keys(this.currentCard).length !== 0) {
-                let card = this.cards.find(
-                    card => card.id === this.currentCard.id
-                );
-                card.text = this.currentCard.text;
-                card.color = this.currentCard.color;
-                card.fontColor = this.currentCard.fontColor;
-                this.currentCard = {};
-                this.showCreate = true;
-                this.showTrash = false;
-            }
+            this.$store.dispatch("saveCardAndUpdateView");
+            this.showCreate = true;
+            this.showTrash = false;
         }
     }
 };
