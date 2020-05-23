@@ -7,9 +7,6 @@
 <script>
 export default {
     name: "PostIt",
-    data() {
-        return {};
-    },
     computed:{
         currentCard(){
             return this.$store.state.currentCard
@@ -20,7 +17,7 @@ export default {
 
 <style>
 .currentCard {
-    grid-area: 1/1/5/4;
+    grid-area: 1/1/4/4;
     border-radius: 3px;
     box-shadow: 4px 4px 5px 0px rgba(135, 135, 135, 1);
     background-color: dodgerblue;

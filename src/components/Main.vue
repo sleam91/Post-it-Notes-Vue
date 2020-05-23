@@ -1,12 +1,12 @@
 <template>
-    <main v-bind:class = "(showList)?'list':''">
+    <main v-bind:class = "showList?'list':''">
         <div
             v-for="card in $store.state.cards"
             v-bind:key="card.id"
             v-bind:card="card"
             class="card"
             v-bind:id="card.id"
-            v-bind:style="{backgroundColor: card.color}"
+            v-bind:style="[{backgroundColor: card.color},cardsDisplay]"
             v-on:click="expandCard(card.id)"
         ></div>
 
@@ -18,24 +18,26 @@
 import PostIt from "@/components/PostIt";
 export default {
     name: "Main",
-
     components: {
         PostIt
     },
-
     props: {
         showGrid: Boolean,
         showList: Boolean
     },
-    data() {
-        return {
-            
-        };
-    },
     methods: {
         expandCard(id) {
             this.$store.dispatch('expandCard',id)
+            // this.cardsDisplay.display='none'
             this.$emit("hide");
+            
+        }
+    },
+    computed:{
+        cardsDisplay(){
+            return{
+                display:!this.showGrid&&!this.showList?'none':'initial'
+            }
         }
     }
 };
